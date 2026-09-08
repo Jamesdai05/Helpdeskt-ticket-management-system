@@ -1,7 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState,useEffect } from "react";
 import { createTicket } from "@/actions/ticket.actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 const TicketNewPage = () => {
@@ -10,6 +12,16 @@ const TicketNewPage = () => {
             success: false,
             message: "",
         });
+
+    const router = useRouter();
+    useEffect(() => {
+        // if the success is true, then ticket will be created and store in the database and page will be direct to the tickets page.
+        if (state.success) {
+            toast.success("Ticket has been created successfully!");
+            router.push("/tickets")
+        }
+    },[state.success,router])
+
 
     return (
         <div className="min-h-screen bg-blue-50 flex items-center justify-center px-4">

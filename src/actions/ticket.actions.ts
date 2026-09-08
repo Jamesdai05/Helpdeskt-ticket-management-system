@@ -1,5 +1,5 @@
 'use server';
-import * as Sentry from "@sentry/nextjs";
+// import * as Sentry from "@sentry/nextjs";
 import { logEvent } from "@/app/utils/sentry";
 
 import { prisma } from "@/db/prisma";
@@ -11,7 +11,7 @@ export async function createTicket(prevState: { success: boolean, message: strin
     const description = formdata.get("description") as string;
     const priority = formdata.get("priority") as string;
 
-    console.log(subject, description, priority);
+    // console.log(subject, description, priority);
 
     try {
         // below for error testing.
