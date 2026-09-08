@@ -27,22 +27,25 @@ export async function createTicket(prevState: { success: boolean, message: strin
             data: { subject, description, priority }
         });
 
-        Sentry.addBreadcrumb({
-            category: "ticket",
-            message: `Ticket created:${ticket.id}`,
-            level:"info"
-        })
+        // Sentry.addBreadcrumb({
+        //     category: "ticket",
+        //     message: `Ticket created:${ticket.id}`,
+        //     level:"info"
+        // })
 
-        Sentry.captureMessage(`Ticket was created successfully:${ticket.id}!`);
+        // Sentry.captureMessage(`Ticket was created successfully:${ticket.id}!`);
+        logEvent(`Ticket created:${ticket.id}`, "ticket", { ticketId:ticket.id },"info")
 
         revalidatePath("/tickets");
         return { success: true, message: "New ticket are created successfully!" };
     } catch (error) {
         //  to send the status to the sentry server and for developer to troubleshooting.
-        Sentry.captureException(error as Error, {
+        // Sentry.captureException(error as Error, {
             // to show the formdata which user has entered
-            extra: { formdata: Object.fromEntries(formdata.entries()) }
-        })
+        //     extra: { formdata: Object.fromEntries(formdata.entries()) }
+        // })
+
+        logEvent("Ticket creation failed","ticket",{formdata:Object.fromEntries(formdata.entries())},"error",error)
         return { success: false, message: "Ticket creation is failed!" };
     }
 }
