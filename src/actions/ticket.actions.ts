@@ -49,3 +49,18 @@ export async function createTicket(prevState: { success: boolean, message: strin
         return { success: false, message: "Ticket creation is failed!" };
     }
 }
+
+
+export async function getTickets(){
+    try {
+        const tickets=await prisma.ticket.findMany({
+            orderBy:{createdAt:"desc"}
+        })
+
+        logEvents('Fetched ticket list','ticket',{count:ticket.length},'info');
+        return tickets;
+    } catch (error) {
+        logEvent('Failed to fetch ticket list','ticket',{data:""},'error',error);
+        return [];
+    }
+}
