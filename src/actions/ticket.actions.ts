@@ -57,7 +57,7 @@ export async function getTickets(){
             orderBy:{createdAt:"desc"}
         })
 
-        logEvents('Fetched ticket list','ticket',{count:ticket.length},'info');
+        logEvent('Fetched ticket list','ticket',{count:tickets.length},'info');
         return tickets;
     } catch (error) {
         logEvent('Failed to fetch ticket list','ticket',{data:""},'error',error);

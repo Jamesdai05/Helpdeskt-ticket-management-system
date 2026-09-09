@@ -1,0 +1,72 @@
+[
+    {
+        "subject": "Unable to login",
+        "description":
+        "User is unable to log in with the correct email and password.",
+        "priority": "High",
+        "status": "Open"
+    },
+    {
+        "subject": "Password reset email not received",
+        "description":
+        "User requested a password reset but did not receive the reset email.",
+        "priority": "Medium",
+        "status": "Open"
+    },
+    {
+        "subject": "Application loading slowly",
+        "description":
+        "The dashboard takes more than 10 seconds to load after signing in.",
+        "priority": "Medium",
+        "status": "In Progress"
+    },
+    {
+        "subject": "Payment transaction failed",
+        "description":
+        "Customer receives an error when attempting to complete a payment.",
+        "priority": "High",
+        "status": "In Progress"
+    },
+    {
+        "subject": "Profile picture cannot be uploaded",
+        "description":
+        "Uploading a new profile picture results in an unexpected server error.",
+        "priority": "Low",
+        "status": "Open"
+    },
+    {
+        "subject": "Incorrect order status",
+        "description":
+        "The order has been delivered but is still displayed as processing.",
+        "priority": "Medium",
+        "status": "Resolved"
+    },
+    {
+        "subject": "Mobile navigation menu not working",
+        "description":
+        "The navigation menu does not open when the menu icon is tapped on mobile devices.",
+        "priority": "High",
+        "status": "Open"
+    },
+    {
+        "subject": "Email notifications cannot be disabled",
+        "description":
+        "User disabled email notifications in settings but continues to receive them.",
+        "priority": "Low",
+        "status": "In Progress"
+    },
+    {
+        "subject": "Duplicate customer records",
+        "description":
+        "Multiple customer records are being created when the registration form is submitted twice.",
+        "priority": "High",
+        "status": "Resolved"
+    },
+    {
+        "subject": "Search results are inaccurate",
+        "description":
+        "Searching for an existing product sometimes returns unrelated products.",
+        "priority": "Medium",
+        "status": "Open"
+    }
+]
