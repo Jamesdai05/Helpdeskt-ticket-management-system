@@ -26,7 +26,7 @@ const TicketCard = ({ priority, subject, id }) => {
                   Priority:{" "}
                   <span className={getPriorityClass(priority)}>{priority}</span>
               </div>
-              <Link href="/tickets/ticket_id" className="inline-block mt-2 px-3 py-1 rounded transition text-center bg-blue-300 text-white">View More</Link>
+              <Link href=`/tickets/{id}` className="inline-block mt-2 px-3 py-1 rounded transition text-center bg-blue-300 text-white">View More</Link>
           </div>
     </div>
   )
