@@ -2,13 +2,14 @@
 import { prisma } from "../src/db/prisma";
 import data from "@/db/data.json";
 
-
+// deleting the data before seeding
 async function seeding() {
-  await prisma.ticket.createMany({
-    data,
-  });
+    await prisma.ticket.deleteMany();
+    await prisma.ticket.createMany({
+        data,
+    });
 
-  console.log("Tickets seeded successfully.");
+    console.log("Tickets seeded successfully.");
 }
 
 
