@@ -1,6 +1,6 @@
 'use server';
 // import * as Sentry from "@sentry/nextjs";
-import { logEvent } from "@/app/utils/sentry";
+import { logEvent } from "@/utils/sentry";
 
 import { prisma } from "@/db/prisma";
 

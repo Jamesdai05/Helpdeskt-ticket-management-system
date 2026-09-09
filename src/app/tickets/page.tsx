@@ -1,5 +1,5 @@
 import {getTickets} from "@/actions/ticket.actions";
-import logEvent
+import { logEvent } from "@/utils/sentry"
 
 
 const page = () => {
