@@ -6,9 +6,40 @@ import { notFound } from "next/navigation";
 
 const TicketDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
     const { id } = await props.params
-    
+
+    const ticket=await getTicketById(id)
+    console.log(ticket)
+
   return (
-    <div>TicketDetailsPage {id}</div>
+    <div className="min-h-screen bg-blue-50 mx-auto p-4">
+        <div className='max-w-2xl mx-auto bg-white rounded-lg shadow border border-gray-200 p-8 space-y-6'>
+            <h1 className="text-blue-600 text-3xl font-bold">{ticket.subject}</h1>
+
+            <div className="text-gray-600">
+                <h2 className="text-lg font-semibold mb-2">Description:</h2>
+                <p>{ticket.description}</p>
+            </div>
+
+            <div className="text-gray-600">
+                <h2 className="text-lg font-semibold mb-2">Priority:</h2>
+                <p>{ticket.priority}</p>
+            </div>
+            <div className="text-gray-600">
+                <h2 className="text-lg font-semibold mb-2">Status:</h2>
+                <p>{ticket.status}</p>
+            </div>
+            <div className="text-gray-600 flex items-center justify-between">
+                {/* <div>
+                    <h2 className="text-lg font-semibold mb-2">Created At:</h2>
+                    <p>{new Date(ticket.createdAt).toLocaleDateString()}</p>
+                </div>
+                <div>
+                    <h2 className="text-lg font-semibold mb-2">Updated At:</h2>
+                    <p>{new Date(ticket.updatedAt).toLocaleDateString()}</p>
+                </div> */}
+            </div>
+        </div>
+    </div>
   )
 }
 export default TicketDetailsPage

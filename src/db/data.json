@@ -4,69 +4,89 @@
         "description":
         "User is unable to log in with the correct email and password.",
         "priority": "High",
-        "status": "Open"
+        "status": "Open",
+        "createdAt": "2026-08-15T09:30:00.000Z",
+        "updatedAt": "2026-08-15T09:30:00.000Z"
     },
     {
         "subject": "Password reset email not received",
         "description":
         "User requested a password reset but did not receive the reset email.",
         "priority": "Medium",
-        "status": "Open"
+        "status": "Open",
+        "createdAt": "2026-08-10T10:30:00.000Z",
+        "updatedAt": "2026-08-10T11:30:00.000Z"
     },
     {
         "subject": "Application loading slowly",
         "description":
         "The dashboard takes more than 10 seconds to load after signing in.",
         "priority": "Medium",
-        "status": "In Progress"
+        "status": "In Progress",
+        "createdAt": "2026-08-06T09:30:00.000Z",
+        "updatedAt": "2026-08-15T09:30:00.000Z"
     },
     {
         "subject": "Payment transaction failed",
         "description":
         "Customer receives an error when attempting to complete a payment.",
         "priority": "High",
-        "status": "In Progress"
+        "status": "In Progress",
+        "createdAt": "2026-07-15T09:30:00.000Z",
+        "updatedAt": "2026-07-20T09:30:00.000Z"
     },
     {
         "subject": "Profile picture cannot be uploaded",
         "description":
         "Uploading a new profile picture results in an unexpected server error.",
         "priority": "Low",
-        "status": "Open"
+        "status": "Open",
+        "createdAt": "2026-05-15T08:30:00.000Z",
+        "updatedAt": "2026-05-20T09:30:00.000Z"
     },
     {
         "subject": "Incorrect order status",
         "description":
         "The order has been delivered but is still displayed as processing.",
         "priority": "Medium",
-        "status": "Resolved"
+        "status": "Resolved",
+        "createdAt": "2026-05-16T08:30:00.000Z",
+        "updatedAt": "2026-05-24T09:30:00.000Z"
     },
     {
         "subject": "Mobile navigation menu not working",
         "description":
         "The navigation menu does not open when the menu icon is tapped on mobile devices.",
         "priority": "High",
-        "status": "Open"
+        "status": "Open",
+        "createdAt":"2026-05-11T08:30:00.000Z",
+        "updatedAt": "2026-05-13T09:30:00.000Z"
     },
     {
         "subject": "Email notifications cannot be disabled",
         "description":
         "User disabled email notifications in settings but continues to receive them.",
         "priority": "Low",
-        "status": "In Progress"
+        "status": "In Progress",
+        "createdAt": "2026-05-10T08:30:00.000Z",
+        "updatedAt": "2026-05-11T09:33:00.000Z"
     },
     {
         "subject": "Duplicate customer records",
         "description":
         "Multiple customer records are being created when the registration form is submitted twice.",
         "priority": "High",
-        "status": "Resolved"
+        "status": "Resolved",
+        "createdAt": "2026-05-16T08:30:00.000Z",
+        "updatedAt": "2026-05-20T10:30:00.000Z"
     },
     {
         "subject": "Search results are inaccurate",
         "description":
         "Searching for an existing product sometimes returns unrelated products.",
         "priority": "Medium",
-        "status": "Open"
+        "status": "Open",
+        "createdAt": "2026-08-22T08:30:00.000Z",
+        "updatedAt": "2026-08-25T09:30:00.000Z"
     }
 ]
