@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 
-const TicketCard = ({ priority, subject, id }) => {
+interface Ticket{
+    priority: string;
+    subject: string;
+    id: number;
+}
+
+const TicketCard = ({ priority,subject, id }:Ticket) => {
 
     const getPriorityClass = (p:string) => {
         switch (p) {
@@ -26,7 +32,7 @@ const TicketCard = ({ priority, subject, id }) => {
                   Priority:{" "}
                   <span className={getPriorityClass(priority)}>{priority}</span>
               </div>
-              <Link href=`/tickets/{id}` className="inline-block mt-2 px-3 py-1 rounded transition text-center bg-blue-300 text-white">View More</Link>
+              <Link href={`/tickets/${id}`} className="inline-block mt-2 px-3 py-1 rounded transition text-center bg-blue-300 text-white">View More</Link>
           </div>
     </div>
   )

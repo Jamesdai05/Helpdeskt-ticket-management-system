@@ -25,7 +25,7 @@ const NewTicketForm = () => {
 
     return (
         <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8 border border-gray-200">
-            <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Summit a Support Ticket</h1>
+            <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">Summit A Support Ticket</h1>
             {state.message && !state.success && (<p className="text-red-500 text-center mb-4">{state.message}</p>)}
             <form action={formAction} className="space-y-4 text-gray-700">
                 <input type="text"
