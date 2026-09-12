@@ -1,9 +1,7 @@
 import { getTickets } from "@/actions/ticket.actions";
 import { logEvent } from "@/utils/sentry";
-import Link from "next/link";
+// import Link from "next/link";
 import TicketCard from "./ticket";
-// Navbar
-import Navbar from "../../components/Navbar";
 
 const TicketsPage = async () => {
     const tickets = await getTickets();
@@ -11,7 +9,6 @@ const TicketsPage = async () => {
 
     return (
         <div className="min-h-screen bg-blue-50">
-            <Navbar />
             <div className="p-4">
                 <h1 className="text-3xl font-bold text-blue-600 mb-8 text-center">
                     Support tickets List

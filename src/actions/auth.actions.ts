@@ -1,5 +1,5 @@
 import { prisma } from "@/db/prisma"; //use to the model to manipulate the data
-import { signAuthToken, setAuthCookie } from "@/lib/auth";
+import { signAuthToken, setAuthCookie,removeCookie } from "@/lib/auth";
 import { logEvent } from "@/utils/sentry";
 import bcrypt from "bcryptjs";
 
@@ -49,7 +49,7 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
         // monitor message
         logEvent('User registered successfully', 'auth', { userId: newUser.id, email }, 'info');
 
-        return { success: true, message: "User has been successfully registered!" };
+        return { success: true, message: 'User has been successfully registered!' };
     } catch (error) {
         logEvent('Error occurred during registration', 'auth', {}, 'error', error);
         return { success: false, message: "Error occurred during registration" };
@@ -57,7 +57,58 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
 
 };
 
+// Log user out and remove auth cookie
+
+const logOut = async (): Promise<ResponseRe> => {
+    try {
+        await removeCookie();
+        logEvent('Logout successfully', 'auth', {}, 'info');
+        return { success: true, message: "User has been logout successfully!" };
+    } catch (error) {
+        logEvent("Error occurred during log out", 'auth', {}, 'error', error);
+        return { success: false, message: "User logout failed" };
+    }
+};
+
+
+const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<ResponseRe> => {
+    try {
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+
+        if (!email || !password) {
+            logEvent("All fields are required", "auth", { email, password }, 'warning');
+
+            return { success: false, message: "Email and password are required" };
+        };
+
+        const user = await prisma.user.findUnique({
+            where:{email},
+        })
+
+        if (!user) {
+            logEvent('User not found', 'auth', { email }, 'warning');
+            return { success: false, message: 'No user is found.' };
+        }
+        const isPasswordMatch = await bcrypt.compare(password, user.password)
+
+        if (!isPasswordMatch) {
+            logEvent('Incorrect password', 'auth', { email }, 'warning');
+        }
+
+        const token = await signAuthToken({ payload: { userId: user.id } });
+        await setAuthCookie(token);
+
+        return { success: true, message: "Log in successfully!" };
+    } catch (error) {
+        logEvent('Login error occurred', 'auth', {}, 'error', error);
+        return { success: false, message: "Error during log in!" };
+    }
+}
+
 
 export {
     userRegistration,
+    logOut,
+    userLogIn,
 }
