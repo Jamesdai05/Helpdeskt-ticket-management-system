@@ -3,10 +3,10 @@ import { cookies } from "next/headers";
 import { logEvent } from '@/utils/sentry';
 
 
-type AuthTokenPayload = {
-    userId: string;
-    email: string;
-};
+// type AuthTokenPayload = {
+//     userId: string;
+//     email: string;
+// };
 
 const secret = new TextEncoder().encode(process.env.AUTH_SECRETS);
 // set cookiename
