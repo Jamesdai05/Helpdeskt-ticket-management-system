@@ -1,3 +1,5 @@
+import "server-only";
+
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -5,7 +7,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-    throw new Error("Database url is not found!");
+    throw new Error("Database url is missing!");
 }
 
 const globalForPrisma = globalThis as unknown as {
@@ -13,7 +15,10 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const adapter = new PrismaPg ({
-    connectionString
+    connectionString,
+    connectionTimeoutMillis: 15000,
+    idleTimeoutMillis: 30000,
+    max: 10,
 })
 
 //  to create a new prosma with nullish coalescing operator, means null or empty.
