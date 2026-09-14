@@ -1,4 +1,4 @@
-import "server-only"; // only used in server 
+import "server-only"; // only used in server
 
 import { JWTPayload, jwtVerify, SignJWT } from 'jose';
 import { cookies } from "next/headers";
@@ -36,7 +36,7 @@ const signAuthToken = async ({ payload }: { payload: JWTPayload }):Promise<strin
 
         return token;
     } catch (error) {
-        logEvent("Token sign failed", 'auth', { payload }, 'error', error);
+        logEvent("Token sign failed", 'auth', {}, 'error', error);
         // throw new Error("Token sign error!");
         return null;
     }
@@ -51,7 +51,7 @@ const verifyAuthToken = async <T>(token:string):Promise<T|null> => {
         })
         return payload as T;
     } catch (error) {
-        logEvent("Verifcation of token failed", 'auth', {}, 'error', error)
+        logEvent("Verification of token failed", 'auth', {}, 'error', error)
         // throw new Error("Token verification failed!");
         return null;
     }

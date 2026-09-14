@@ -34,7 +34,7 @@ const RegisterForm = () => {
                 action={formAction}
             >
                 <div className="form-group space-y-2">
-                    <label htmlFor="text" className="label">Name</label>
+                    <label htmlFor="name" className="label">Name</label>
                     <input
                         type="text"
                         placeholder="Enter your name"

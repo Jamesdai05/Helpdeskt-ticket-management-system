@@ -1,11 +1,10 @@
-"use client"
-
 import Link from 'next/link';
+import { getCurrentUser } from '@/lib/currentUser';
 import logo from "../../public/logo.jpg";
 import Image from "next/image";
-import { useRouter } from 'next/navigation';
 
-const Navbar = () => {
+
+const Navbar = async() => {
 
     const links = [
         { label: "tickets", href: "/tickets" },
@@ -13,7 +12,7 @@ const Navbar = () => {
         { label: "New ticket", href: "/tickets/new" },
     ];
 
-    const router = useRouter();
+    const user = await getCurrentUser();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border bg-blue-600 backdrop-blur-sm">
@@ -41,8 +40,19 @@ const Navbar = () => {
                     )}
                 </ul>
                 <div className='hidden items-center gap-3 text-white md:flex'>
-                    <Link href="/login" className='button'>LogIn</Link>
-                    <Link href="/register" className='primary'>SignUp</Link>
+                    {user ? (
+                        <>
+                            <p>Welcome,{ user.name }</p>
+                            <Link href="/logout">Logout</Link>
+                        </>
+                    ) : (
+                            <>
+                                <Link href="/login" className='button'>LogIn</Link>
+                                <Link href="/register" className='primary'>SignUp</Link>
+                            </>
+                    )
+                        }
+
                 </div>
             </nav>
         </header>
