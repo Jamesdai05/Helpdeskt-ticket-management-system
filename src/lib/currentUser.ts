@@ -7,7 +7,7 @@ type AuthPayload = {
 };
 
 
-const getCurrentUser = async () => {
+export const getCurrentUser = async () => {
     try {
         const token = await getAuthCookie();
         if (!token) return null;
@@ -30,4 +30,4 @@ const getCurrentUser = async () => {
         console.error("Error in getting the current user!",error);
         return null;
     }
-}
+};
