@@ -42,7 +42,7 @@ const Navbar = () => {
                 </ul>
                 <div className='hidden items-center gap-3 text-white md:flex'>
                     <Link href="/login" className='button'>LogIn</Link>
-                    <Link href="/signup" className='primary'>SignUp</Link>
+                    <Link href="/register" className='primary'>SignUp</Link>
                 </div>
             </nav>
         </header>
