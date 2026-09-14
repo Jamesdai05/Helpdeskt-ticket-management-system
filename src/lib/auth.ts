@@ -1,3 +1,5 @@
+import "server-only"; // only used in server 
+
 import { JWTPayload, jwtVerify, SignJWT } from 'jose';
 import { cookies } from "next/headers";
 import { logEvent } from '@/utils/sentry';
@@ -7,17 +9,27 @@ import { logEvent } from '@/utils/sentry';
 //     userId: string;
 //     email: string;
 // };
+const authSecrets=process.env.AUTH_SECRETS
 
-const secret = new TextEncoder().encode(process.env.AUTH_SECRETS);
+if (!authSecrets) {
+    throw new Error("Auth secret is not defined!");
+}
+
+
+const secret = new TextEncoder().encode(authSecrets);
+
+
+
+
 // set cookiename
 const cookieName = 'auth-token';
 
 
-// Encrypt and sign token
-const signAuthToken = async ({ payload }: { payload: JWTPayload }) => {
+// sign token
+const signAuthToken = async ({ payload }: { payload: JWTPayload }):Promise<string | null> => {
     try {
         const token = await new SignJWT(payload)
-            .setProtectedHeader({ alg: "256" }) // different algorithm 384,512
+            .setProtectedHeader({ alg: "HS256" }) // different algorithm 384,512
             .setIssuedAt()
             .setExpirationTime('7d')
             .sign(secret)
@@ -25,12 +37,13 @@ const signAuthToken = async ({ payload }: { payload: JWTPayload }) => {
         return token;
     } catch (error) {
         logEvent("Token sign failed", 'auth', { payload }, 'error', error);
-        throw new Error("Token sign failed");
+        // throw new Error("Token sign error!");
+        return null;
     }
 }
 
 
-// Decrypt and verify
+// verify token
 const verifyAuthToken = async <T>(token:string):Promise<T|null> => {
     try {
         const { payload } = await jwtVerify(token, secret, {
@@ -38,13 +51,14 @@ const verifyAuthToken = async <T>(token:string):Promise<T|null> => {
         })
         return payload as T;
     } catch (error) {
-        logEvent("Verifcation of token failed", 'auth', { tokenSnippet: token.slice(0, 10) }, 'error', error)
-        throw new Error("Token verification failed!");
+        logEvent("Verifcation of token failed", 'auth', {}, 'error', error)
+        // throw new Error("Token verification failed!");
+        return null;
     }
 }
 
 //set the auth cookie
-const setAuthCookie=async(token: string)=>{
+const setAuthCookie=async(token: string):Promise<void>=>{
     try {
         const cookieStore = await cookies();
         cookieStore.set(cookieName, token, {
@@ -55,12 +69,13 @@ const setAuthCookie=async(token: string)=>{
             maxAge: 60 * 60 * 24 * 7, // 7 Days
         });
     } catch (error) {
-        logEvent('Failed to set cookie', 'auth', { token }, 'error', error);
+        logEvent('Failed to set cookie', 'auth', {}, 'error', error);
+        throw new Error("Set auth cookie failed!");
     }
 }
 
 // get the token from cookie
-const getAuthCookie = async() => {
+const getAuthCookie = async() :Promise<string | undefined> => {
     const cookieStored = await cookies();
     const token = cookieStored.get(cookieName);
     return token?.value;
@@ -68,7 +83,7 @@ const getAuthCookie = async() => {
 
 
 // delete the token cookie
-const removeCookie = async () => {
+const removeAuthCookie = async ():Promise<void> => {
     try {
         const cookieStored = await cookies();
         cookieStored.delete(cookieName);
@@ -83,5 +98,5 @@ export {
     verifyAuthToken,
     setAuthCookie,
     getAuthCookie,
-    removeCookie,
+    removeAuthCookie,
 }

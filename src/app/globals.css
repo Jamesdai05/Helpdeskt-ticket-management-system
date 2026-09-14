@@ -46,7 +46,7 @@ body {
 }
 
 .primary{
-    @apply text-white bg-sky-300 font-bold rounded-md hover:bg-blue-600 hover:text-foreground;
+    @apply text-white p-1 bg-sky-300 font-bold rounded-md hover:bg-blue-600 hover:text-foreground;
 }
 
 .label{

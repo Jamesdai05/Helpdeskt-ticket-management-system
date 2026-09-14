@@ -1,11 +1,38 @@
 'use client';
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+import { userRegistration } from "@/actions/auth.actions";
+import { toast } from "sonner";
+import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
+
+
+
 
 const RegisterForm = () => {
+    const initialState = {
+        success: false,
+        message:"",
+    }
+
+    const router = useRouter();
+    const [state, formAction] = useActionState(userRegistration, initialState)
+
+    useEffect(()=>{
+        if (state.success) {
+            toast.success("User has been created successfully");
+            router.push("/login");
+        }
+    },[state.success,router])
+
     return (
-        <div>
-            <form className="flex flex-col max-w-lg p-6 space-y-6 mx-auto">
+        <div className="max-w-2xl flex flex-col mx-auto items-center justify-center shadow-md rounded-lg bg-white p-8">
+            <h1 className="text-blue-400 font-semibold text-4xl">Register</h1>
+            <form
+                className="flex flex-col max-w-lg p-6 space-y-6 mx-auto"
+                action={formAction}
+            >
                 <div className="form-group space-y-2">
                     <label htmlFor="text" className="label">Name</label>
                     <input

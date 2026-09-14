@@ -1,5 +1,7 @@
+"use server";
+
 import { prisma } from "@/db/prisma"; //use to the model to manipulate the data
-import { signAuthToken, setAuthCookie,removeCookie } from "@/lib/auth";
+import { signAuthToken, setAuthCookie,removeAuthCookie } from "@/lib/auth";
 import { logEvent } from "@/utils/sentry";
 import bcrypt from "bcryptjs";
 
@@ -27,7 +29,7 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
             where: { email },
         });
 
-        if (!userExisted) {
+        if (userExisted) {
             logEvent('User already Exists', 'auth', { email }, 'warning');
             return { success: false, message: "User already exists" };
         };
@@ -44,6 +46,9 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
 
         // sign and set token
         const token = await signAuthToken({payload:{ userId: newUser.id }});
+        if (!token) {
+            throw new Error("Failed to create authentication token");
+        }
         await setAuthCookie(token);
 
         // monitor message
@@ -61,7 +66,7 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
 
 const logOut = async (): Promise<ResponseRe> => {
     try {
-        await removeCookie();
+        await removeAuthCookie();
         logEvent('Logout successfully', 'auth', {}, 'info');
         return { success: true, message: "User has been logout successfully!" };
     } catch (error) {
@@ -97,6 +102,10 @@ const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<Respon
         }
 
         const token = await signAuthToken({ payload: { userId: user.id } });
+
+        if (!token) {
+            throw new Error("No authentication token")
+        }
         await setAuthCookie(token);
 
         return { success: true, message: "Log in successfully!" };
