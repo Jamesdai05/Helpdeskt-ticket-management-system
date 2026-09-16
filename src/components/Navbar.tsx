@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getCurrentUser } from "@/actions/currentUser";
 import logo from "../../public/logo.jpg";
 import Image from "next/image";
-
+import LogOutButton from './LogOutButton';
 
 const Navbar = async () => {
 
@@ -45,7 +45,7 @@ const Navbar = async () => {
                     {user ? (
                         <>
                             <p>Welcome,{user.name}</p>
-                            <Link href="/logout">Logout</Link>
+                            <LogOutButton />
                         </>
                     ) : (
                         <>

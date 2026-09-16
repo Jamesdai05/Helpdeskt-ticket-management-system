@@ -42,7 +42,7 @@ body {
 }
 
 .button {
-    @appy text-white p-4 bg-blue-600 font-semibold rounded-md hover:text-foreground;
+    @appy text-white p-2 bg-blue-600 font-semibold rounded-md hover:text-foreground;
 }
 
 .primary{
