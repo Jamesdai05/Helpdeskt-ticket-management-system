@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getCurrentUser } from '@/lib/currentUser';
+import { getCurrentUser } from "@/actions/currentUser";
 import logo from "../../public/logo.jpg";
 import Image from "next/image";
 

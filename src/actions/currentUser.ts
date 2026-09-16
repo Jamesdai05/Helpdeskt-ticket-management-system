@@ -1,4 +1,4 @@
-import { verifyAuthToken, getAuthCookie } from "./auth";
+import { verifyAuthToken, getAuthCookie } from "../lib/auth";
 import { prisma } from "@/db/prisma";
 
 
@@ -22,12 +22,12 @@ export const getCurrentUser = async () => {
             select: {
                 id: true,
                 email: true,
-                name:true,
+                name: true,
             },
-        })
+        });
         return currentUser;
     } catch (error) {
-        console.error("Error in getting the current user!",error);
+        console.error("Error in getting the current user!", error);
         return null;
     }
 };

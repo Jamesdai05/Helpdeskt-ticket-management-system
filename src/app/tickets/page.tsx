@@ -6,7 +6,7 @@ import TicketCard from "./ticket";
 const TicketsPage = async () => {
     const tickets = await getTickets();
     // console.log(tickets);
-
+    // console.log("Tickets page rendering...");
     return (
         <div className="min-h-screen bg-blue-50">
             <div className="p-4">

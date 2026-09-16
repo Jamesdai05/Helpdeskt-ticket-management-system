@@ -12,30 +12,68 @@ type ResponseRe = {
 };
 
 const userRegistration = async (prestate: ResponseRe, formData: FormData): Promise<ResponseRe> => {
-    try {
-        const name = formData.get('name') as string;
-        const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
 
-        if (!name || !email || !password) {
+    try {
+        const name = (formData.get('name') as string)?.trim();
+        const email = (formData.get('email') as string)?.trim().toLowerCase();
+        const password = formData.get('password') as string;
+        const confirmpassword = formData.get('confirmpassword') as string;
+
+
+
+        if (!name || !email || !password || !confirmpassword) {
             logEvent('Missing required fields!', 'auth', { name, email }, 'warning');
             return { success: false, message: "All fields are required!" };
-        }
+        };
+
+        if(password !== confirmpassword){
+            logEvent('Passwords not matched','auth',{name,email},'warning');
+            return {success:false, message:"Passwords not matched"};
+        };
+        // Find user
+
 
 
         // check if user exsits
-        // to
         const userExisted = await prisma.user.findUnique({
             where: { email },
         });
+
+        console.log(
+            `1. First findUnique: ${((performance.now() - start) / 1000).toFixed(3)}s`
+        );
 
         if (userExisted) {
             logEvent('User already Exists', 'auth', { email }, 'warning');
             return { success: false, message: "User already exists" };
         };
 
+
+
+        const userExistedAgain = await prisma.user.findUnique({
+            where: { email },
+        });
+
+        // console.log(
+        //     `SECOND findUnique: ${((performance.now() - start) / 1000).toFixed(3)}s`
+        // );
+
+
+
+        // Check password length
+        if (password.length < 8) {
+            return {
+                success: false,
+                message: "Password must be at least 8 characters.",
+            };
+        }
+
+
         // hash password
+
         const hashedpassword = await bcrypt.hash(password, 10);
+
+        // create user
         const newUser = await prisma.user.create({
             data: {
                 name,
@@ -43,19 +81,32 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
                 password: hashedpassword,
             }
         });
-
         // sign and set token
-        const token = await signAuthToken({payload:{ userId: newUser.id }});
+        // Sign token
+        // start = performance.now();
+
+        const token = await signAuthToken({ payload: { userId: newUser.id } });
+
         if (!token) {
             throw new Error("Failed to create authentication token");
         }
+
+        // start = performance.now();
         await setAuthCookie(token);
+
+        
 
         // monitor message
         logEvent('User registered successfully', 'auth', { userId: newUser.id, email }, 'info');
 
-        return { success: true, message: 'User has been successfully registered!' };
+
+        // To check the time of the web react in fetching the data.
+        // console.log(
+        //     `TOTAL: ${((performance.now() - registrationStart) / 1000).toFixed(3)}s`
+        // );
+        return { success: true, message: 'User has been successfully registered!'};
     } catch (error) {
+        console.timeEnd("registration");
         logEvent('Error occurred during registration', 'auth', {}, 'error', error);
         return { success: false, message: "Error occurred during registration" };
     }
@@ -78,11 +129,11 @@ const logOut = async (): Promise<ResponseRe> => {
 
 const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<ResponseRe> => {
     try {
-        const email = formData.get('email') as string;
+        const email = (formData.get('email') as string)?.trim().toLowerCase();
         const password = formData.get('password') as string;
 
         if (!email || !password) {
-            logEvent("All fields are required", "auth", { email, password }, 'warning');
+            logEvent("All fields are required", "auth", { email}, 'warning');
 
             return { success: false, message: "Email and password are required" };
         };
@@ -93,12 +144,13 @@ const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<Respon
 
         if (!user) {
             logEvent('User not found', 'auth', { email }, 'warning');
-            return { success: false, message: 'No user is found.' };
+            return { success: false, message: 'Invalid email or password' };
         }
         const isPasswordMatch = await bcrypt.compare(password, user.password)
 
         if (!isPasswordMatch) {
-            logEvent('Incorrect password', 'auth', { email }, 'warning');
+            logEvent('Invalid email or password', 'auth', { email }, 'warning');
+            return { success: false, message: 'Invalid email or password' };
         }
 
         const token = await signAuthToken({ payload: { userId: user.id } });
@@ -107,7 +159,7 @@ const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<Respon
             throw new Error("No authentication token")
         }
         await setAuthCookie(token);
-
+        logEvent('Log In successfully', 'auth', {useId:user.id}, 'info');
         return { success: true, message: "Log in successfully!" };
     } catch (error) {
         logEvent('Login error occurred', 'auth', {}, 'error', error);
