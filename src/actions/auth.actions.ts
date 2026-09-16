@@ -39,24 +39,11 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
             where: { email },
         });
 
-        console.log(
-            `1. First findUnique: ${((performance.now() - start) / 1000).toFixed(3)}s`
-        );
 
         if (userExisted) {
             logEvent('User already Exists', 'auth', { email }, 'warning');
             return { success: false, message: "User already exists" };
         };
-
-
-
-        const userExistedAgain = await prisma.user.findUnique({
-            where: { email },
-        });
-
-        // console.log(
-        //     `SECOND findUnique: ${((performance.now() - start) / 1000).toFixed(3)}s`
-        // );
 
 
 
@@ -91,22 +78,16 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
             throw new Error("Failed to create authentication token");
         }
 
-        // start = performance.now();
         await setAuthCookie(token);
 
-        
+
 
         // monitor message
         logEvent('User registered successfully', 'auth', { userId: newUser.id, email }, 'info');
 
 
-        // To check the time of the web react in fetching the data.
-        // console.log(
-        //     `TOTAL: ${((performance.now() - registrationStart) / 1000).toFixed(3)}s`
-        // );
         return { success: true, message: 'User has been successfully registered!'};
     } catch (error) {
-        console.timeEnd("registration");
         logEvent('Error occurred during registration', 'auth', {}, 'error', error);
         return { success: false, message: "Error occurred during registration" };
     }
@@ -115,14 +96,14 @@ const userRegistration = async (prestate: ResponseRe, formData: FormData): Promi
 
 // Log user out and remove auth cookie
 
-const logOut = async (): Promise<ResponseRe> => {
+const logOut = async (prestate:ResponseRe,formData:FormData): Promise<ResponseRe> => {
     try {
         await removeAuthCookie();
         logEvent('Logout successfully', 'auth', {}, 'info');
         return { success: true, message: "User has been logout successfully!" };
     } catch (error) {
         logEvent("Error occurred during log out", 'auth', {}, 'error', error);
-        return { success: false, message: "User logout failed" };
+        return { success: false, message: "Logout failed,please try again!" };
     }
 };
 
@@ -159,7 +140,7 @@ const userLogIn = async (prevState:ResponseRe,formData:FormData): Promise<Respon
             throw new Error("No authentication token")
         }
         await setAuthCookie(token);
-        logEvent('Log In successfully', 'auth', {useId:user.id}, 'info');
+        logEvent('Log In successfully', 'auth', {userId:user.id}, 'info');
         return { success: true, message: "Log in successfully!" };
     } catch (error) {
         logEvent('Login error occurred', 'auth', {}, 'error', error);

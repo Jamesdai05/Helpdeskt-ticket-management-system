@@ -3,6 +3,8 @@
 import { useActionState, useEffect, useReducer } from "react";
 import { logOut } from "../actions/auth.actions";
 import { useRouter } from "next/navigation"
+import { toast } from "sonner";
+
 
 
 
@@ -19,7 +21,10 @@ const LogOutButton = () => {
 
     useEffect(() => {
         if (state.success) {
+            toast.success(state.message)
             router.replace("/login");
+        } else {
+            toast.error(state.message);
         }
     },[state,router])
 
