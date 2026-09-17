@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/actions/currentUser";
 import logo from "../../public/logo.jpg";
 import Image from "next/image";
 import LogOutButton from './LogOutButton';
+import MobileNav from './MobileNav';
 
 const Navbar = async () => {
 
@@ -16,7 +17,7 @@ const Navbar = async () => {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border bg-blue-600 backdrop-blur-sm">
-            <nav className="mx-auto h-16 max-w-7xl flex justify-between items-center gap-4 px-4 sm:px-6">
+            <nav className="mx-auto h-16 max-w-7xl flex justify-between items-center gap-4 px-4 sm:px-6 relative">
                 <Link
                     href="/"
                     className="flex items-center gap-2 font-semibold text-white"
@@ -56,6 +57,7 @@ const Navbar = async () => {
                     }
 
                 </div>
+                <MobileNav links={links} user={user} />
             </nav>
         </header>
     );

@@ -20,10 +20,10 @@ const RegisterForm = () => {
     const [state, formAction,pending] = useActionState(userRegistration, initialState)
 
     useEffect(() => {
-        console.log("ACTION STATE RECEIVED:", new Date().toISOString(), state);
+        // console.log("ACTION STATE RECEIVED:", new Date().toISOString(), state);
         if (state.success) {
-            toast.success("User has been created successfully");
-            console.time("navigate-to-tickets");
+            toast.success(state.message);
+            // console.time("navigate-to-tickets");
             router.replace("/tickets");
         }else if(state.message){
             toast.error(state.message);
@@ -66,6 +66,7 @@ const RegisterForm = () => {
                         placeholder="Enter your password"
                         name="password"
                         id="password"
+                        autoComplete="new-password"
                         className="input" />
                 </div>
 
@@ -76,11 +77,12 @@ const RegisterForm = () => {
                         placeholder="Confirm your password"
                         name="confirmpassword"
                         id="confirmpassword"
+                        autoComplete="new-password"
                         className="input" />
                 </div>
 
                 <div className="flex w-full justify-center">
-                    <button className="button bg-blue-400 p-2 text-white rounded-lg w-full hover:bg-blue-600" disabled={pending}>{pending ? "Registering..." : "Register"}</button>
+                    <button type="submit" className="button bg-blue-400 p-2 text-white rounded-lg w-full hover:bg-blue-600" disabled={pending}>{pending ? "Registering..." : "Register"}</button>
                 </div>
 
                 <div className="form-group">

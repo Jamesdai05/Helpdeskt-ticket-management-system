@@ -84,12 +84,8 @@ const getAuthCookie = async() :Promise<string | undefined> => {
 
 // delete the token cookie
 const removeAuthCookie = async ():Promise<void> => {
-    try {
-        const cookieStored = await cookies();
-        cookieStored.delete(cookieName);
-    } catch (error) {
-        logEvent("Failed to delete cookie", 'auth', {}, 'error', error);
-    }
+    const cookieStored = await cookies();
+    cookieStored.delete(cookieName);
 }
 
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { userLogIn } from "@/actions/auth.actions";
 import { toast } from "sonner";
-import { useFormState } from "react-dom";
+
 
 
 const LoginForm = () => {
@@ -20,10 +20,12 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (state.success) {
-            toast.success("User log in successfully!");
-            router.push("/tickets");
+            toast.success(state.message);
+            router.replace("/tickets/mine");
+        } else if(state.message){
+            toast.error(state.message)
         }
-    })
+    },[state,router])
 
 
     return (
