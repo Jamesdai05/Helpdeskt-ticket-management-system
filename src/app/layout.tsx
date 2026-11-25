@@ -5,7 +5,7 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/components/AuthContextProvider";
 import { getCurrentUser } from "@/actions/currentUser";
-getCurrentUser
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   description: "Focus on solving the issue you faced",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  const user=
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const user = await getCurrentUser();
 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>

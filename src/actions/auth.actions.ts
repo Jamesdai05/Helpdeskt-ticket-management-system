@@ -112,7 +112,7 @@ const userRegistration = async (prevstate: ResponseRe, formData: FormData): Prom
 
 // Log user out and remove auth cookie
 
-const logOut = async (formData:FormData): Promise<never> => {
+const logOut = async (): Promise<never> => {
     try {
         await removeAuthCookie();
         logEvent('Logged out successfully', 'auth', {}, 'info');
@@ -166,10 +166,6 @@ const userLogIn = async (prevState: ResponseRe, formData: FormData): Promise<Res
     }
 };
 
-
-const getCurrentUser = await ()=> {
-  
-}
 
 
 export {

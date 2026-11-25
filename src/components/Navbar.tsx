@@ -1,19 +1,23 @@
+"use client"
+
 import Link from 'next/link';
 import { getCurrentUser } from "@/actions/currentUser";
 import logo from "../../public/logo.jpg";
 import Image from "next/image";
 import LogOutButton from './LogOutButton';
 import MobileNav from './MobileNav';
+import { useAuth } from './AuthContextProvider';
 
-const Navbar = async () => {
+
+const Navbar = () => {
 
     const links = [
-        { label: "tickets", href: "/tickets" },
-        { label: "my tickets", href: "/tickets/mine" },
-        { label: "New ticket", href: "/tickets/new" },
+        { label: "Tickets", href: "/tickets" },
+        { label: "My Tickets", href: "/tickets/mine" },
+        { label: "New Ticket", href: "/tickets/new" },
     ];
 
-    const user = await getCurrentUser();
+  const { user, isAuthenticated } = useAuth();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border bg-blue-600 backdrop-blur-sm">
@@ -42,10 +46,10 @@ const Navbar = async () => {
                         )}
                     </ul>
                 )}
-                <div className='hidden items-center gap-3 text-white md:flex'>
-                    {user ? (
+                <div className='hidden items-center gap-2 text-white md:flex'>
+                    {isAuthenticated ? (
                         <>
-                            <p>Welcome,{user.name}</p>
+                            <p>Welcome,{user?.name}</p>
                             <LogOutButton />
                         </>
                     ) : (
