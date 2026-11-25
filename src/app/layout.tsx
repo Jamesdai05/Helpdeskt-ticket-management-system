@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/components/AuthContextProvider";
+import { getCurrentUser } from "@/actions/currentUser";
+getCurrentUser
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,16 +23,17 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const user=
+
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-          <body className="min-h-full flex flex-col">
-              <Navbar />
-              {children}
-              <Toaster  richColors position="top-center" />
-          </body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col">
+        <AuthProvider user={user}>
+          <Navbar />
+          {children}
+          <Toaster richColors position="top-center" />
+        </AuthProvider>
+      </body>
     </html>
   );
 }

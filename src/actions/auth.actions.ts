@@ -167,6 +167,11 @@ const userLogIn = async (prevState: ResponseRe, formData: FormData): Promise<Res
 };
 
 
+const getCurrentUser = await ()=> {
+  
+}
+
+
 export {
     userRegistration,
     logOut,
