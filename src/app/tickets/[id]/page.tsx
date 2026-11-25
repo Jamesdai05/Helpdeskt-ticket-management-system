@@ -17,8 +17,8 @@ const TicketDetailsPage = async (props: { params: Promise<{ id: string }> }) => 
     logEvent("Ticket not found","ticket",{ticketId:ticket.id},"info");
 
     return (
-        <div className="min-h-screen bg-blue-50 mx-auto">
-            <div className='max-w-2xl m-auto bg-white rounded-lg shadow border border-gray-200 p-8 space-y-6'>
+        <div className="max-h-screen bg-blue-50 m-auto flex justify-center items-center">
+            <div className='max-w-2xl bg-white rounded-lg shadow border border-gray-200 p-8 space-y-6'>
                 <h1 className="text-blue-600 text-3xl font-bold">{ticket.subject}</h1>
 
                 <div className="text-gray-600">
