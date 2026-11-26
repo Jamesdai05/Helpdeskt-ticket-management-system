@@ -29,9 +29,9 @@ const LoginForm = () => {
 
 
     return (
-        <div className="max-w-2xl p-8 flex flex-col items-center justify-center shadow-md bg-white rounded-lg">
+        <div className="w-full max-w-md flex flex-col items-center justify-center shadow-md bg-white rounded-lg p-8">
             <h1 className="text-blue-400 font-semibold text-4xl">Log In</h1>
-            <form className="flex flex-col max-w-lg p-6 space-y-6 mx-auto" action={formAction}>
+            <form className="w-full flex flex-col max-w-lg p-6 space-y-6 mx-auto" action={formAction}>
                 <div className="form-group space-y-2">
                     <label htmlFor="email" className="label">Email</label>
                     <input

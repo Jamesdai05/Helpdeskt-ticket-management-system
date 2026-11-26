@@ -31,10 +31,10 @@ const RegisterForm = () => {
     },[state,router])
 
     return (
-        <div className="max-w-2xl flex flex-col mx-auto items-center justify-center shadow-md rounded-lg bg-white p-8">
+        <div className="w-full max-w-md flex flex-col mx-auto items-center justify-center shadow-md rounded-lg bg-white p-8">
             <h1 className="text-blue-400 font-semibold text-4xl">Register</h1>
             <form
-                className="flex flex-col max-w-lg p-6 space-y-6 mx-auto"
+                className="w-full flex flex-col max-w-lg p-6 space-y-6 mx-auto"
                 action={formAction}
             >
                 <div className="form-group space-y-2">
