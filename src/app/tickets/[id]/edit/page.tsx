@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getTicketById } from "@/actions/ticket.actions"
+import { getTicketById } from "@/lib/data/tickets"
 import EditTicketForm from "./EditTicketForm";
 
 export type Ticket = {

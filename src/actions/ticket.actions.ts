@@ -7,7 +7,7 @@ import { prisma } from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/actions/currentUser";
 import { redirect } from "next/navigation";
-import { success } from "zod";
+
 
 type ResponseRe = {
   success: boolean;
@@ -69,45 +69,6 @@ export async function createTicket(prevState: ResponseRe, formdata: FormData): P
       error
     );
     return { success: false, message: "Ticket creation is failed!" };
-  }
-}
-
-export async function getTickets() {
-  const user = await getCurrentUser();
-  if (!user) {
-    logEvent("Please log in first", "auth", {}, "warning");
-    return { success: false, message: "You need to log in first!" };
-  }
-  try {
-    const tickets = await prisma.ticket.findMany({
-      where: { userId: user.id },
-      orderBy: { createdAt: "desc" },
-    });
-
-    logEvent("Fetched ticket list", "ticket", { count: tickets.length }, "info");
-    return tickets;
-  } catch (error) {
-    logEvent("Failed to fetch ticket list", "ticket", { data: "" }, "error", error);
-    return [];
-  }
-}
-
-export async function getTicketById(id: string) {
-  try {
-    const ticket = await prisma.ticket.findUnique({
-      where: {
-        id: Number(id),
-      },
-    });
-
-    if (!ticket) {
-      logEvent("Ticket not found", "ticket", { ticketId: id }, "warning");
-      return {success:false,message:"Failed to Get the ticket.",ticket:null}
-    }
-    return {success:true,message:"Successfully get the data",ticket}
-  } catch (error) {
-    logEvent("Error in fetching ticket", "ticket", { ticketId: id }, "error", error);
-    return {success:false,message:"Error in the ticket fetching.",ticket:null};
   }
 }
 

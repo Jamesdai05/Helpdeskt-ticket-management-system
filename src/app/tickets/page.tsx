@@ -1,4 +1,4 @@
-import { getTickets } from "@/actions/ticket.actions";
+import { getTickets } from "@/lib/data/tickets";
 import TicketCard from "./ticket";
 import { getCurrentUser } from "@/actions/currentUser";
 import { redirect } from "next/navigation";

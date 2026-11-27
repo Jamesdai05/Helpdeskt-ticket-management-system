@@ -1,4 +1,4 @@
-import { getTicketById } from "@/actions/ticket.actions";
+import { getTicketById } from "@/lib/data/tickets";
 // import { logEvent } from "@/utils/sentry";
 import Link from "next/link";
 import { notFound } from "next/navigation";
