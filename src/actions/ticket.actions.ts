@@ -32,7 +32,7 @@ export async function createTicket(prevState: ResponseRe, formdata: FormData): P
       logEvent(
         "Validation Error: Missing fields",
         "ticket",
-        { subject, description, priority },
+        { hasSubject: !!subject, hasDescription: !!description, hasPriority: !!priority },
         "warning"
       );
       return { success: false, message: "All fields are required!" };
@@ -64,7 +64,7 @@ export async function createTicket(prevState: ResponseRe, formdata: FormData): P
     logEvent(
       "Ticket creation failed",
       "ticket",
-      { formdata: Object.fromEntries(formdata.entries()) },
+      { priority: formdata.get("priority") }, // no user-entered text
       "error",
       error
     );

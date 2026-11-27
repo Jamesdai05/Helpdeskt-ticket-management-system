@@ -2,14 +2,15 @@ import * as Sentry from '@sentry/nextjs';
 
 type LogLevel = 'fatal' | 'error' | 'warning' | 'info' | 'debug';
 
+// Breadcrumbs are free: they're only sent along with a real event, giving context for it.
+// Only errors create Sentry events, so routine info/warning logs don't burn quota or bury real issues.
 export function logEvent(
     message: string,
     category: string = "general",
-    data?: Record<string, any>, // this is the general type.
+    data?: Record<string, unknown>,
     level: LogLevel = "info",
-    error?:unknown
+    error?: unknown
 ) {
-    // to add the Breadcrumb for the message.
     Sentry.addBreadcrumb({
         category,
         message,
@@ -19,7 +20,7 @@ export function logEvent(
 
     if (error) {
         Sentry.captureException(error, { extra: data });
-    } else {
-        Sentry.captureMessage(message,level)
+    } else if (level === 'error' || level === 'fatal') {
+        Sentry.captureMessage(message, level);
     }
 }

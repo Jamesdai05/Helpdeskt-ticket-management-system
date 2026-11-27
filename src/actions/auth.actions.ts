@@ -24,12 +24,12 @@ const userRegistration = async (prevstate: ResponseRe, formData: FormData): Prom
 
 
         if (!name || !email || !password || !confirmpassword) {
-            logEvent('Missing required fields!', 'auth', { name, email }, 'warning');
+            logEvent('Missing required fields!', 'auth', { hasName: !!name, hasEmail: !!email, hasPassword: !!password, hasConfirm: !!confirmpassword }, 'warning');
             return { success: false, message: "All fields are required!" };
         };
 
         if (password !== confirmpassword) {
-            logEvent('Passwords not matched', 'auth', { name, email }, 'warning');
+            logEvent('Passwords not matched', 'auth', {}, 'warning');
             return { success: false, message: "Passwords not matched" };
         };
         // Find user
@@ -43,7 +43,7 @@ const userRegistration = async (prevstate: ResponseRe, formData: FormData): Prom
 
 
         if (userExisted) {
-            logEvent('User already Exists', 'auth', { email }, 'warning');
+            logEvent('User already Exists', 'auth', {}, 'warning');
             return { success: false, message: "User already exists" };
 
         };
@@ -77,7 +77,7 @@ const userRegistration = async (prevstate: ResponseRe, formData: FormData): Prom
         } catch (err) {
             //  double-submit for the user creation
             if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-                logEvent('User already exists (race on create)', 'auth', { email }, 'warning');
+                logEvent('User already exists (race on create)', 'auth', {}, 'warning');
                 return { success: false, message: "User already exists" };
             }
             throw err; // let the outer catch handle anything else
@@ -99,7 +99,7 @@ const userRegistration = async (prevstate: ResponseRe, formData: FormData): Prom
 
 
         // monitor message
-        logEvent('User registered successfully', 'auth', { userId: newUser.id, email }, 'info');
+        logEvent('User registered successfully', 'auth', { userId: newUser.id }, 'info');
 
 
         return { success: true, message: 'User has been successfully registered!' };
@@ -132,7 +132,7 @@ const userLogIn = async (prevState: ResponseRe, formData: FormData): Promise<Res
         const password = formData.get('password') as string;
 
         if (!email || !password) {
-            logEvent("All fields are required", "auth", { email }, 'warning');
+            logEvent("All fields are required", "auth", { hasEmail: !!email, hasPassword: !!password }, 'warning');
 
             return { success: false, message: "Email and password are required" };
         };
@@ -142,13 +142,13 @@ const userLogIn = async (prevState: ResponseRe, formData: FormData): Promise<Res
         });
 
         if (!user) {
-            logEvent('User not found', 'auth', { email }, 'warning');
+            logEvent('User not found', 'auth', {}, 'warning');
             return { success: false, message: 'Invalid email or password' };
         }
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            logEvent('Invalid email or password', 'auth', { email }, 'warning');
+            logEvent('Invalid email or password', 'auth', {}, 'warning');
             return { success: false, message: 'Invalid email or password' };
         }
 

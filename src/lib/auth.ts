@@ -51,7 +51,9 @@ const verifyAuthToken = async <T>(token:string):Promise<T|null> => {
         })
         return payload as T;
     } catch (error) {
-        logEvent("Verification of token failed", 'auth', {}, 'error', error)
+        // Expired/invalid tokens are normal (e.g. old cookie) - record a breadcrumb, not an error event.
+        const reason = error instanceof Error ? error.name : 'unknown';
+        logEvent("Verification of token failed", 'auth', { reason }, 'warning')
         // throw new Error("Token verification failed!");
         return null;
     }
