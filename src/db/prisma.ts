@@ -1,5 +1,3 @@
-import "server-only";
-
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -21,7 +19,7 @@ const adapter = new PrismaPg ({
     max: 10,
 })
 
-//  to create a new prosma with nullish coalescing operator, means null or empty.
+//  to create a new prosma with nullish coalescing operator, means null or undefined.
 //  not null then use left value, otherwise, them right value is used.
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({adapter});
 

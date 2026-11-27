@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { editTicketById } from "@/actions/ticket.actions";
 import { type Ticket } from "./page";
+import Link from 'next/link';
 
 const EditTicketForm = ({ ticket }: { ticket: Ticket }) => {
   const action = editTicketById.bind(null, String(ticket.id))
@@ -44,9 +45,17 @@ const EditTicketForm = ({ ticket }: { ticket: Ticket }) => {
           <option value="Medium">Medium</option>
           <option value="High">High</option>
         </select>
-        <button className="w-full bg-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 p-3 text-white text-xl">
-          Submit
-        </button>
+        <div className="flex justify-center gap-6">
+          <button className="bg-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 px-4 py-2 text-white  hover:bg-blue-600 transition" disabled={isPending}>
+            {isPending ? "Submitting..." : "Submit"}
+          </button>
+          <Link
+            href={`/tickets/${ticket.id}`}
+            className="bg-blue-500 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 px-4 py-2 text-white hover:bg-blue-600 transition"
+          >
+            Cancle
+          </Link>
+        </div>
       </form>
     </div>
   );

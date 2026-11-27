@@ -1,12 +1,12 @@
 "use client"
 
 import { createContext, useContext,type ReactNode} from "react"
-import { type AuthContextType,type Authuser } from "@/types/auth";
+import { type AuthContextType, type AuthUser } from "@/types/auth";
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export type AuthProviderProps = { user: Authuser | null; children:ReactNode }
+export type AuthProviderProps = { user: AuthUser | null; children: ReactNode };
 
 
 export const AuthProvider = ({children,user}:AuthProviderProps) => {

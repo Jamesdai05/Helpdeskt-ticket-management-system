@@ -1,5 +1,8 @@
 // this is the function for data seeding
-import { prisma } from "../src/db/prisma";
+"sever-only";
+
+import "dotenv/config";
+import { prisma } from "./prisma";
 import data from "@/db/data.json";
 import { users } from "@/db/user";
 import bcrypt from "bcryptjs";

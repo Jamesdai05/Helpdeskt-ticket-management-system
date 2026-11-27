@@ -7,6 +7,7 @@ import { prisma } from "@/db/prisma";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/actions/currentUser";
 import { redirect } from "next/navigation";
+import { success } from "zod";
 
 type ResponseRe = {
   success: boolean;
@@ -101,11 +102,12 @@ export async function getTicketById(id: string) {
 
     if (!ticket) {
       logEvent("Ticket not found", "ticket", { ticketId: id }, "warning");
+      return {success:false,message:"Failed to Get the ticket.",ticket:null}
     }
-    return ticket;
+    return {success:true,message:"Successfully get the data",ticket}
   } catch (error) {
     logEvent("Error in fetching ticket", "ticket", { ticketId: id }, "error", error);
-    return null;
+    return {success:false,message:"Error in the ticket fetching.",ticket:null};
   }
 }
 
@@ -123,18 +125,16 @@ export async function editTicketById(
 
   const ticketId = Number(id);
 
-  console.log("Ticket ID:", id);
-  console.log("Form Data:", Object.fromEntries(formData.entries()));
+  // console.log("Ticket ID:", id);
+  // console.log("Form Data:", Object.fromEntries(formData.entries()));
   if (!Number.isSafeInteger(ticketId) || ticketId<0) {
     return { success: false, message: "Invalid ticket id." };
   }
 
   if (!subject?.trim() || !description.trim() || !priority) {
-    logEvent("All fields are required.", "ticket", {}, "warning");
+    logEvent("All fields are required.", "ticket", {ticketId}, "warning");
     return { success: false, message: "Ticket creation failed." };
   }
-
-
 
   try {
 
@@ -157,4 +157,50 @@ export async function editTicketById(
   revalidatePath("/tickets");
   revalidatePath(`/tickets/${id}`);
   redirect(`/tickets/${id}`);
+}
+
+export async function closeTheTicketById(
+  id: string,
+  _prevState: ResponseRe,
+  _formData?: FormData
+): Promise<ResponseRe> {
+  try {
+    const user = await getCurrentUser();
+  if (!user) {
+    // redirect("/login");
+    return { success: false, message: "Please log in first!" };
+   };
+
+  const ticketId = Number(id);
+
+  if (!Number.isSafeInteger(ticketId) || ticketId < 0) {
+    logEvent("Invalid ticket id", "ticket", {}, "warning");
+    return { success: false, message: "Invalid ticket id." };
+  }
+
+    const ticket = await prisma.ticket.update({
+      where: {
+        id: ticketId,
+        userId: user.id,
+        status: {
+          not: "closed"
+        }
+      },
+      data: {
+        status: "closed"
+      },
+    });
+
+    if (!ticket) {
+      return { success: false, message: "Ticket not found!" };
+    }
+  } catch (e) {
+    console.error("Error occurred during update", e);
+    return { success: false, message: "Failed to update the ticket." };
+  }
+
+  revalidatePath("/tickets");
+  revalidatePath(`/tickets/${id}`);
+  // redirect("/tickets")
+  return { success: true, message: "Ticket has been closed." };
 }

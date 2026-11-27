@@ -1,22 +1,25 @@
 import { getTicketById } from "@/actions/ticket.actions";
-import { logEvent } from "@/utils/sentry";
+// import { logEvent } from "@/utils/sentry";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import TicketLoadedToast from "@/components/TicketLoadedToast";
+import CloseTicketButton from "@/components/CloseTicketButton";
 
 
 const TicketDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
     const { id } = await props.params
 
-    const ticket=await getTicketById(id)
+  const {success,message,ticket } =await getTicketById(id)
     // console.log(ticket)
 
-    if(!ticket){
+    if(!ticket || !success){
         notFound();
     }
 
-    logEvent("Ticket not found","ticket",{ticketId:ticket.id},"info");
 
-    return (
+  return (
+    <>
+      <TicketLoadedToast success={success} message={message} ticketId={id} />
       <div className="max-h-screen bg-blue-50 m-auto flex justify-center items-center">
         <div className="max-w-lg w-120 bg-white rounded-lg shadow border border-gray-200 p-8 space-y-6">
           <h1 className="text-blue-600 text-3xl font-bold">{ticket.subject}</h1>
@@ -58,9 +61,11 @@ const TicketDetailsPage = async (props: { params: Promise<{ id: string }> }) => 
               Edit
             </Link>
           </div>
+          <CloseTicketButton ticketId={ticket.id} isClosed={ticket.status==="closed"} />
         </div>
       </div>
-    );
+    </>
+  );
 }
 
 export default TicketDetailsPage
